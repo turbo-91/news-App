@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import { Newspaper, TextSearch, UserRound } from "lucide-react";
 import { useRouter } from "next/router";
 
-const NavBar = styled.footer`
+const StyledNavBar = styled.footer`
   position: fixed;
   width: 100%;
   height: 8vh;
@@ -44,10 +44,10 @@ const IconWrapper = styled.div`
   margin-bottom: 4px;
 `;
 
-export default function NavBarComp() {
+export default function NavBar() {
   const router = useRouter();
   return (
-    <NavBar>
+    <StyledNavBar>
       <NavLink href="/" active={router.pathname === "/"}>
         <IconWrapper>
           <Newspaper color="#001233" strokeWidth={1} />
@@ -66,6 +66,6 @@ export default function NavBarComp() {
         </IconWrapper>
         User Area
       </NavLink>
-    </NavBar>
+    </StyledNavBar>
   );
 }
