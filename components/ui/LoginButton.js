@@ -6,16 +6,15 @@ import githubMark from "/assets/github-mark.png";
 
 const StyledButton = styled.button`
   background-color: transparent;
-  border: 2px solid #11009e;
   padding: 10px 20px;
+  color: #001233;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: black;
-  font-size: 1em;
-  font-family: Helvetica, Arial, sans-serif;
+  border: 1px solid #001233;
+  text-decoration: none;
+  margin: 0 1vw;
 `;
 
 const Container = styled.div`
@@ -33,9 +32,21 @@ export default function LoginButton() {
   return (
     <Container>
       <StyledButton onClick={() => signIn("github")}>
-        Sign in with GitHub
-        <Image src={githubMark} alt="GitHub Logo" width={20} height={20} />
-        <Image src={githubLogo} alt="GitHub Logo" width={60} height={20} />
+        Sign in with
+        <Image
+          layout="responsive"
+          src={githubMark}
+          alt="GitHub Logo"
+          width={20}
+          height={20}
+        />
+        <Image
+          layout="responsive"
+          src={githubLogo}
+          alt="GitHub Logo"
+          width={60}
+          height={20}
+        />
       </StyledButton>
     </Container>
   );
