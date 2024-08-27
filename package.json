@@ -1,5 +1,5 @@
 {
-  "name": "template-next",
+  "name": "app",
   "version": "0.0.0-unreleased",
   "private": true,
   "scripts": {
@@ -10,13 +10,23 @@
     "test": "jest --watchAll"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.2.0",
+    "date-fns": "^3.6.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.8",
+    "lucide-react": "^0.395.0",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.1",
     "next": "13.4.8",
+    "next-auth": "^4.24.7",
+    "openai": "^4.52.0",
     "react": "18.2.0",
     "react-date-range": "^2.0.1",
     "react-dom": "18.2.0",
-    "styled-components": "^6.1.12",
+    "react-slick": "^0.30.2",
+    "react-spinners": "^0.13.8",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.11",
     "swr": "^2.2.5"
   },
   "devDependencies": {
