@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { Bookmark, BookmarkCheck, Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import newsAppThumbnail from "/assets/news-app-thumbnail.png";
 
