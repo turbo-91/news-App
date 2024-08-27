@@ -60,7 +60,7 @@ export default function NavBar() {
         </IconWrapper>
         Search
       </NavLink>
-      <NavLink href="/user-area" active={router.pathname === "/user-area"}>
+      <NavLink href="/user-area" active={router.pathname === "/user"}>
         <IconWrapper>
           <UserRound color="#001233" strokeWidth={1} />
         </IconWrapper>
