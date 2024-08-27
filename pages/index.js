@@ -1,7 +1,5 @@
+import Spotlight from "@/features/Spotlight/Spotlight";
+
 export default function HomePage() {
-  return (
-    <div>
-      <h1>Hello from Next.js</h1>
-    </div>
-  );
+  return <Spotlight />;
 }
