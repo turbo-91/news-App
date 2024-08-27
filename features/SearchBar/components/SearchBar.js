@@ -1,5 +1,36 @@
 import React from "react";
 import styled from "styled-components";
+import Input from "@/components/form/Input";
+import Label from "@/components/form/Label";
+import Button from "@/components/ui/SubmitButton";
+import useSWR from "swr";
+import DateRangeCompFrom from "./DataRangCompFrom";
+
+const Form = styled.form`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 1rem;
+  border: 1px solid #001233;
+  border-radius: 8px;
+  margin-bottom: 20px;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const InlineContainer = styled.div`
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+`;
+
+const BottomContainer = styled.div`
+  margin-top: 15px; /* Space between the rows */
+`;
 
 function SearchBar() {
   // States to store date range & language dropdown value
@@ -42,7 +73,25 @@ function SearchBar() {
     onSearch();
   };
 
-  return <div>SearchBar</div>;
+  return (
+    <Form onSubmit={handleSubmit}>
+      <InlineContainer>
+        <FormGroup>
+          <Label htmlFor="date-from">From:</Label>
+          <DateRangeCompFrom
+            dateRange={dateRangeFrom}
+            setDateRange={setDateRangeFrom}
+          />
+        </FormGroup>
+        <FormGroup>Dete To</FormGroup>
+        <FormGroup>select language</FormGroup>
+      </InlineContainer>
+      <BottomContainer>
+        <FormGroup>Keyword Input</FormGroup>
+      </BottomContainer>
+      <Button type="submit">Search</Button>
+    </Form>
+  );
 }
 
 export default SearchBar;
