@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Input from "@/components/form/Input";
 import Label from "@/components/form/Label";
-import Button from "@/components/ui/SubmitButton";
+import SubmitButton from "@/components/ui/SubmitButton";
 import useSWR from "swr";
 import DateRangeCompFrom from "./DataRangeCompFrom";
 import DateRangeCompTo from "./DateRangeCompTo";
 import LanguageDropdown from "./LanguageDropdown";
+import { useState, useRef } from "react";
 
 const Form = styled.form`
   position: relative;
@@ -30,10 +31,6 @@ const InlineContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const InputContainer = styled.div`
-  margin-top: 15px; /* Space between the rows */
-`;
-
 function SearchBar() {
   // States to store date range & language dropdown value
   const [dateRangeFrom, setDateRangeFrom] = useState("");
@@ -47,11 +44,12 @@ function SearchBar() {
   const { data, error } = useSWR(url, fetcher, { shouldRetryOnError: false });
   const isLoading = !error && !data && !!url;
 
-  const handleSearch = () => {
+  // Handle form submission
+  const handleSearch = (event) => {
+    event.preventDefault();
     setUrl(
       `https://newsapi.org/v2/everything?q=${keyWord}&from=${dateRangeFrom}&to=${dateRangeTo}&language=${languageValue}&pageSize=20&page=${page}&apiKey=10181d5d9ec24883abec4df6256a487e`
     );
-    console.log("url:", url);
   };
 
   // Pagination
@@ -70,14 +68,8 @@ function SearchBar() {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch();
-  };
-
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSearch}>
       <InlineContainer>
         <FormGroup>
           <Label htmlFor="date-from">From:</Label>
@@ -101,18 +93,18 @@ function SearchBar() {
           />
         </FormGroup>
       </InlineContainer>
-      <InputContainer>
-        <FormGroup>
-          <Label htmlFor="keywords">Type one keyword:</Label>
-          <Input
-            id="keywords"
-            value={keyWord}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-        </FormGroup>
-      </InputContainer>
-      <Button type="submit">Search</Button>
+      <FormGroup>
+        <Label htmlFor="keywords">Type one keyword:</Label>
+        <Input
+          id="keywords"
+          value={keyWord}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+      </FormGroup>
+      <InlineContainer>
+        <SubmitButton type="submit"></SubmitButton>
+      </InlineContainer>
     </Form>
   );
 }

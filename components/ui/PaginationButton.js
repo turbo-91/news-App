@@ -15,8 +15,8 @@ const PaginationButton = styled.button`
   }
 `;
 
-function PaginationButton() {
+function PaginationButtonComponent() {
   return <PaginationButton />;
 }
 
-export default PaginationButton;
+export default PaginationButtonComponent;

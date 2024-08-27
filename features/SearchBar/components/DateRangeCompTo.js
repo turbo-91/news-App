@@ -4,6 +4,7 @@ import { Calendar } from "react-date-range";
 import format from "date-fns/format";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import Input from "@/components/form/Input";
 
 export default function DateRangeCompTo({ dateRange, setDateRange }) {
   // open close calendar table state:
@@ -41,12 +42,12 @@ export default function DateRangeCompTo({ dateRange, setDateRange }) {
   };
   return (
     <div className="calenderWrap">
-      <input
+      <Input
         id="date-to"
         value={dateRange}
         readOnly
         className="dataRangeInputBox"
-        onClick={() => setOpen((open) => !open)} // open/close calendar table
+        onClick={() => setOpen((open) => !open)}
       />
       {/* div to make close on outside click possible: */}
       <div ref={refOne}>

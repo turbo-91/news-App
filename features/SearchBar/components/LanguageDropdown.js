@@ -1,18 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import Dropdown from "@/components/form/Dropdown";
 
 const DropdownContainer = styled.div`
   display: flex;
-  justify-content: center;
-  margin-top: 2rem;
 `;
 
-const DropdownWrapper = styled.div`
-  width: 50%;
-  padding: 1.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
+const Dropdown = styled.select`
+  padding: 0.3rem;
+  border: 1px solid #001233;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #001233;
 `;
 
 export default function LanguageDropdown({ languageValue, setLanguageValue }) {
@@ -39,20 +37,19 @@ export default function LanguageDropdown({ languageValue, setLanguageValue }) {
 
   return (
     <DropdownContainer>
-      <DropdownWrapper>
-        <Dropdown
-          id="select-language"
-          onChange={handleSelect}
-          value={languageValue}
-        >
-          <option value="">All</option>
-          {options.map((option) => (
-            <option value={option.value} key={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Dropdown>
-      </DropdownWrapper>
+      <Dropdown
+        id="select-language"
+        onChange={handleSelect}
+        value={languageValue}
+        required
+      >
+        <option value=""></option>
+        {options.map((option) => (
+          <option value={option.value} key={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </Dropdown>
     </DropdownContainer>
   );
 }

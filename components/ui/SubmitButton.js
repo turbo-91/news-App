@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = styled.button`
+const StyledSubmitButton = styled.button`
   padding: 10px 15px;
   background-color: transparent;
   color: #001233;
   border: none;
   border-radius: 4px;
-  font-size: 1rem;
   cursor: pointer;
   align-self: flex-start;
   border: 1px solid #001233;
@@ -17,8 +16,8 @@ const Button = styled.button`
   }
 `;
 
-function Button() {
-  return <Button />;
+function SubmitButton() {
+  return <StyledSubmitButton>Search</StyledSubmitButton>;
 }
 
-export default Button;
+export default SubmitButton;

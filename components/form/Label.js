@@ -6,7 +6,7 @@ const Label = styled.label`
   margin-bottom: 5px;
 `;
 
-function Label() {
+function LabelComponent() {
   return <Label />;
 }
 
