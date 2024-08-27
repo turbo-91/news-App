@@ -4,7 +4,9 @@ import Input from "@/components/form/Input";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/SubmitButton";
 import useSWR from "swr";
-import DateRangeCompFrom from "./DataRangCompFrom";
+import DateRangeCompFrom from "./DataRangeCompFrom";
+import DateRangeCompTo from "./DateRangeCompTo";
+import LanguageDropdown from "./LanguageDropdown";
 
 const Form = styled.form`
   position: relative;
@@ -28,7 +30,7 @@ const InlineContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const BottomContainer = styled.div`
+const InputContainer = styled.div`
   margin-top: 15px; /* Space between the rows */
 `;
 
@@ -49,6 +51,7 @@ function SearchBar() {
     setUrl(
       `https://newsapi.org/v2/everything?q=${keyWord}&from=${dateRangeFrom}&to=${dateRangeTo}&language=${languageValue}&pageSize=20&page=${page}&apiKey=10181d5d9ec24883abec4df6256a487e`
     );
+    console.log("url:", url);
   };
 
   // Pagination
@@ -83,12 +86,32 @@ function SearchBar() {
             setDateRange={setDateRangeFrom}
           />
         </FormGroup>
-        <FormGroup>Dete To</FormGroup>
-        <FormGroup>select language</FormGroup>
+        <FormGroup>
+          <Label htmlFor="date-to">To:</Label>
+          <DateRangeCompTo
+            dateRange={dateRangeTo}
+            setDateRange={setDateRangeTo}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="select-language">Select a language:</Label>
+          <LanguageDropdown
+            languageValue={languageValue}
+            setLanguageValue={setLanguageValue}
+          />
+        </FormGroup>
       </InlineContainer>
-      <BottomContainer>
-        <FormGroup>Keyword Input</FormGroup>
-      </BottomContainer>
+      <InputContainer>
+        <FormGroup>
+          <Label htmlFor="keywords">Type one keyword:</Label>
+          <Input
+            id="keywords"
+            value={keyWord}
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+        </FormGroup>
+      </InputContainer>
       <Button type="submit">Search</Button>
     </Form>
   );
