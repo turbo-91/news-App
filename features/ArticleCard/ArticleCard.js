@@ -62,11 +62,12 @@ const StyledStrong = styled.strong`
   color: #001233;
 `;
 
-export default function ArticleCard({ article, favorites, setFavorites }) {
+export default function ArticleCard({ article, favoriteArticles }) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
     return src;
   };
+  console.log(article);
 
   return (
     <Card>

@@ -77,7 +77,7 @@ const NavigationButtons = styled.div`
   }
 `;
 
-export default function Spotlight() {
+export default function Spotlight({ favoriteArticles }) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
     return src;
@@ -152,7 +152,10 @@ export default function Spotlight() {
           <Slider ref={sliderRef} {...settings}>
             {data.articles.map((article, index) => (
               <div key={index}>
-                <ArticleCard article={article} />
+                <ArticleCard
+                  article={article}
+                  favoriteArticles={favoriteArticles}
+                />
               </div>
             ))}
           </Slider>

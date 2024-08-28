@@ -31,7 +31,7 @@ const PaginationButton = styled.button`
   }
 `;
 
-export default function SearchPage({ favorites, setFavorites }) {
+export default function SearchPage({ favoriteArticles }) {
   // States to store date range & language dropdown value
   const [dateRangeFrom, setDateRangeFrom] = useState("");
   const [dateRangeTo, setDateRangeTo] = useState("");
@@ -60,7 +60,7 @@ export default function SearchPage({ favorites, setFavorites }) {
   };
 
   return (
-    <PageContainer favorites={favorites} setFavorites={setFavorites}>
+    <PageContainer>
       <SearchBar
         dateRangeFrom={dateRangeFrom}
         setDateRangeFrom={setDateRangeFrom}
@@ -71,19 +71,16 @@ export default function SearchPage({ favorites, setFavorites }) {
         keyWord={keyWord}
         setKeyword={setKeyword}
         onSearch={handleSearch}
-        favorites={favorites}
-        setFavorites={setFavorites}
       />
       {isLoading && <p>Loading...</p>}
       {error && <p>Failed to load data</p>}
       {data && data.articles && (
-        <div favorites={favorites} setFavorites={setFavorites}>
+        <div>
           {data.articles.map((article, index) => (
             <ArticleCard
               key={index}
               article={article}
-              favorites={favorites}
-              setFavorites={setFavorites}
+              favoriteArticles={favoriteArticles}
             />
           ))}
           <PaginationContainer>
