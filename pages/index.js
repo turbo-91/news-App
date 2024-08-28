@@ -1,5 +1,10 @@
 import Spotlight from "@/features/Spotlight/Spotlight";
 
-export default function HomePage({ favoriteArticles }) {
-  return <Spotlight favoriteArticles={favoriteArticles} />;
+export default function HomePage({ favoriteArticles, handleToggleFavorite }) {
+  return (
+    <Spotlight
+      favoriteArticles={favoriteArticles}
+      handleToggleFavorite={handleToggleFavorite}
+    />
+  );
 }

@@ -31,7 +31,7 @@ const PaginationButton = styled.button`
   }
 `;
 
-export default function SearchPage({ favoriteArticles }) {
+export default function SearchPage({ favoriteArticles, handleToggleFavorite }) {
   // States to store date range & language dropdown value
   const [dateRangeFrom, setDateRangeFrom] = useState("");
   const [dateRangeTo, setDateRangeTo] = useState("");
@@ -81,6 +81,7 @@ export default function SearchPage({ favoriteArticles }) {
               key={index}
               article={article}
               favoriteArticles={favoriteArticles}
+              handleToggleFavorite={handleToggleFavorite}
             />
           ))}
           <PaginationContainer>

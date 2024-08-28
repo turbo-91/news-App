@@ -109,7 +109,7 @@ const SearchesButton = styled.button`
   }
 `;
 
-export default function LoginPage(favorites, setFavorites) {
+export default function LoginPage() {
   const { data: session, status } = useSession();
 
   const handleSearchButtonClick = () => {
@@ -117,7 +117,7 @@ export default function LoginPage(favorites, setFavorites) {
   };
 
   return (
-    <Container favorites={favorites} setFavorites={setFavorites}>
+    <Container>
       <LoginButton />
       {session && (
         <>

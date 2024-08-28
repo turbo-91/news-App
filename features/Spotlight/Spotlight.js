@@ -77,7 +77,7 @@ const NavigationButtons = styled.div`
   }
 `;
 
-export default function Spotlight({ favoriteArticles }) {
+export default function Spotlight({ favoriteArticles, handleToggleFavorite }) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
     return src;
@@ -155,6 +155,7 @@ export default function Spotlight({ favoriteArticles }) {
                 <ArticleCard
                   article={article}
                   favoriteArticles={favoriteArticles}
+                  handleToggleFavorite={handleToggleFavorite}
                 />
               </div>
             ))}

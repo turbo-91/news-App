@@ -1,7 +1,14 @@
 import React from "react";
 
 function Favorites({ favoriteArticles }) {
-  return <div favoriteArticles={favoriteArticles}>Favorites</div>;
+  return (
+    <div
+      favoriteArticles={favoriteArticles}
+      handleToggleFavorite={handleToggleFavorite}
+    >
+      Favorites
+    </div>
+  );
 }
 
 export default Favorites;
