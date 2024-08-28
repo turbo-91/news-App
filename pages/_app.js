@@ -6,6 +6,11 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
+  // Favorite Functionality
+  const [articles, setArticles] = useLocalStorageState("articles", {
+    defaultValue: [],
+  });
+
   return (
     <>
       <GlobalStyle />
