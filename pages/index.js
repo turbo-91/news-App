@@ -1,10 +1,10 @@
 import Spotlight from "@/features/Spotlight/Spotlight";
 
-export default function HomePage({ favoriteArticles, handleToggleFavorite }) {
+export default function HomePage({ favoriteState, setFavoriteState }) {
   return (
     <Spotlight
-      favoriteArticles={favoriteArticles}
-      handleToggleFavorite={handleToggleFavorite}
+      setFavoriteState={setFavoriteState}
+      favoriteState={favoriteState}
     />
   );
 }

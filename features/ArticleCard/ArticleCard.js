@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import newsAppThumbnail from "/assets/news-app-thumbnail.png";
-import FavoriteButton from "../FavoriteButton/FavoriteButton";
-import isFavorite from "../FavoriteButton/utils/isFavorite";
+import { Bookmark, BookmarkCheck } from "lucide-react";
+import useLocalStorageState from "use-local-storage-state";
 
 const IconWrapper = styled.div`
   position: absolute;
@@ -57,19 +57,92 @@ const StyledStrong = styled.strong`
   color: #001233;
 `;
 
+const FavoriteButton = styled.button`
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+`;
+
 export default function ArticleCard({
   article,
-  favoriteArticles,
-  handleToggleFavorite,
+  favoriteState,
+  setFavoriteState,
+  // favoriteArticles,
+  // handleToggleFavorite,
 }) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
     return src;
   };
-
+  console.log("favoriteState in ArticleCard", favoriteState);
   // make session available for favorite button
   const { data: session } = useSession();
   const userId = session?.user?.userId;
+
+  // Favorite Functionality
+
+  const {
+    source: { id: sourceId, name: sourceName },
+    author,
+    title,
+    description,
+    url,
+    urlToImage,
+    publishedAt,
+    content,
+    __v,
+  } = article;
+
+  function toggleFavorite(article) {
+    console.log("favoriteState in toggleFavorite", favoriteState);
+    console.log("article in toggleFavorite", article);
+    const favoriteArticle = {
+      source: { id: sourceId, name: sourceName },
+      author,
+      title,
+      description,
+      url,
+      urlToImage,
+      publishedAt,
+      content,
+      __v,
+      userId: session.user.userId,
+      isFavorite: true,
+    };
+    console.log("favoriteArticle in toggleFavorite", favoriteArticle);
+    const existingFavorite = favoriteState.find(
+      (faveArticle) =>
+        faveArticle.url === favoriteArticle.url && faveArticle.userId === userId
+    );
+    console.log("existingFavorite in toggleFavorite", existingFavorite);
+
+    if (existingFavorite) {
+      // Toggle the existing favorite's isFavorite status
+      return favoriteState.map((faveArticle) =>
+        faveArticle.url === url && faveArticle.userId === userId
+          ? { ...faveArticle, isFavorite: !faveArticle.isFavorite }
+          : faveArticle
+      );
+    } else {
+      return [...favoriteState, favoriteArticle];
+    }
+  }
+  const toggleFavoriteProduziertObjekte = toggleFavorite(article);
+  console.log(
+    "toggleFavoriteProduziertObjekte",
+    toggleFavoriteProduziertObjekte
+  );
+
+  function handleToggleFavorite(article) {
+    const updatedArticles = toggleFavorite(article);
+    setFavoriteState(updatedArticles);
+  }
+
+  function isFavorite(favoriteState, article) {
+    return favoriteState.find((faveArticle) => faveArticle.url === article.url)
+      ?.isFavorite;
+  }
 
   return (
     <Card>
@@ -92,15 +165,24 @@ export default function ArticleCard({
           height={400}
         />
       )}
-      <FavoriteButton
-        isFavorite={isFavorite(favoriteArticles, article)}
-        handleToggleFavorite={handleToggleFavorite}
-        onClick={() => handleToggleFavorite(favoriteArticles, url, userId)}
-        article={article}
-        url={article.url}
-        userId={userId}
-        favoriteArticles={favoriteArticles}
-      />
+      {session && (
+        <FavoriteButton onClick={handleToggleFavorite}>
+          {isFavorite(favoriteState, article) ? (
+            <IconWrapper>
+              <BookmarkCheck color="#FAF9F6" size={35} strokeWidth={1} />
+            </IconWrapper>
+          ) : (
+            <IconWrapper>
+              <Bookmark
+                fill="#FAF9F6"
+                color="#FAF9F6"
+                size={35}
+                strokeWidth={1}
+              />
+            </IconWrapper>
+          )}
+        </FavoriteButton>
+      )}
       {article.title && (
         <a
           href={article.url}

@@ -77,7 +77,7 @@ const NavigationButtons = styled.div`
   }
 `;
 
-export default function Spotlight({ favoriteArticles, handleToggleFavorite }) {
+export default function Spotlight({ favoriteState, setFavoriteState }) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
     return src;
@@ -93,7 +93,7 @@ export default function Spotlight({ favoriteArticles, handleToggleFavorite }) {
   const handleCountryChange = (value) => {
     setCountryValue(value);
     setUrl(
-      `https://newsapi.org/v2/top-headlines?country=${value}&apiKey=10181d5d9ec24883abec4df6256a487e`
+      `https://newsapi.org/v2/top-headlines?country=${value}&apiKey=21247b89f2cf48c48d0df5ed148af376`
     );
   };
 
@@ -154,8 +154,8 @@ export default function Spotlight({ favoriteArticles, handleToggleFavorite }) {
               <div key={index}>
                 <ArticleCard
                   article={article}
-                  favoriteArticles={favoriteArticles}
-                  handleToggleFavorite={handleToggleFavorite}
+                  favoriteState={favoriteState}
+                  setFavoriteState={setFavoriteState}
                 />
               </div>
             ))}

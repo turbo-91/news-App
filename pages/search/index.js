@@ -14,7 +14,7 @@ const PaginationContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  margin-bottom: 2rem;
+  margin-bottom: 10vh;
 `;
 
 const PaginationButton = styled.button`
@@ -31,7 +31,7 @@ const PaginationButton = styled.button`
   }
 `;
 
-export default function SearchPage({ favoriteArticles, handleToggleFavorite }) {
+export default function SearchPage({ favoriteState, setFavoriteState }) {
   // States to store date range & language dropdown value
   const [dateRangeFrom, setDateRangeFrom] = useState("");
   const [dateRangeTo, setDateRangeTo] = useState("");
@@ -46,7 +46,7 @@ export default function SearchPage({ favoriteArticles, handleToggleFavorite }) {
 
   const handleSearch = () => {
     setUrl(
-      `https://newsapi.org/v2/everything?q=${keyWord}&from=${dateRangeFrom}&to=${dateRangeTo}&language=${languageValue}&pageSize=20&page=${page}&apiKey=10181d5d9ec24883abec4df6256a487e`
+      `https://newsapi.org/v2/everything?q=${keyWord}&from=${dateRangeFrom}&to=${dateRangeTo}&language=${languageValue}&pageSize=20&page=${page}&apiKey=21247b89f2cf48c48d0df5ed148af376`
     );
   };
 
@@ -80,8 +80,8 @@ export default function SearchPage({ favoriteArticles, handleToggleFavorite }) {
             <ArticleCard
               key={index}
               article={article}
-              favoriteArticles={favoriteArticles}
-              handleToggleFavorite={handleToggleFavorite}
+              favoriteState={favoriteState}
+              setFavoriteState={setFavoriteState}
             />
           ))}
           <PaginationContainer>
