@@ -1,18 +1,30 @@
 import React from "react";
 import ArticleCard from "../ArticleCard/ArticleCard";
+import styled from "styled-components";
 
-function FavoritesList({ favoriteArticles, handleToggleFavorite }) {
+const Paragraph = styled.p`
+  color: #001233;
+  margin: 10vh 0;
+  text-align: center;
+  font-size: 1em;
+  font-family: Helvetica, Arial, sans-serif;
+`;
+
+function FavoritesList({ favoriteState, setFavoriteState }) {
+  const favoriteArticles = favoriteState.filter(
+    (article) => article.isFavorite
+  );
   return (
     <div>
       {favoriteArticles.length === 0 ? (
-        <p>No favorite articles yet.</p>
+        <Paragraph>No favorite articles yet.</Paragraph>
       ) : (
         favoriteArticles.map((article, index) => (
           <ArticleCard
             key={index}
             article={article}
-            favoriteArticles={favoriteArticles}
-            handleToggleFavorite={handleToggleFavorite}
+            favoriteState={favoriteState}
+            setFavoriteState={setFavoriteState}
           />
         ))
       )}

@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import newsAppThumbnail from "/assets/news-app-thumbnail.png";
-import FavoriteButton from "../FavoriteButton/FavoriteButton";
+import { Bookmark, BookmarkCheck } from "lucide-react";
 import useLocalStorageState from "use-local-storage-state";
 
 const IconWrapper = styled.div`
@@ -57,8 +57,17 @@ const StyledStrong = styled.strong`
   color: #001233;
 `;
 
+const FavoriteButton = styled.button`
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+`;
+
 export default function ArticleCard({
   article,
+  favoriteState,
+  setFavoriteState,
   // favoriteArticles,
   // handleToggleFavorite,
 }) {
@@ -66,39 +75,28 @@ export default function ArticleCard({
   const customLoader = ({ src }) => {
     return src;
   };
-
+  console.log("favoriteState in ArticleCard", favoriteState);
   // make session available for favorite button
   const { data: session } = useSession();
   const userId = session?.user?.userId;
 
   // Favorite Functionality
-  const [favoriteArticles, setFavoriteArticles] = useLocalStorageState(
-    "favorite Articles",
-    {
-      defaultValue: [],
-    }
-  );
-  console.log("favorite articles before isFavorite", favoriteArticles);
 
-  function isFavorite(favoriteArticles, article) {
-    console.log("favorite articles in isFavorite", favoriteArticles);
-    return favoriteArticles.find(
-      (favoriteArticle) => favoriteArticle.url === article.url
-    )?.isFavorite;
-  }
+  const {
+    source: { id: sourceId, name: sourceName },
+    author,
+    title,
+    description,
+    url,
+    urlToImage,
+    publishedAt,
+    content,
+    __v,
+  } = article;
 
-  function toggleFavorite(favoriteArticles) {
-    const {
-      source: { id: sourceId, name: sourceName },
-      author,
-      title,
-      description,
-      url,
-      urlToImage,
-      publishedAt,
-      content,
-      __v,
-    } = article;
+  function toggleFavorite(article) {
+    console.log("favoriteState in toggleFavorite", favoriteState);
+    console.log("article in toggleFavorite", article);
     const favoriteArticle = {
       source: { id: sourceId, name: sourceName },
       author,
@@ -112,27 +110,38 @@ export default function ArticleCard({
       userId: session.user.userId,
       isFavorite: true,
     };
-    const existingFavorite = favoriteArticles.find(
+    console.log("favoriteArticle in toggleFavorite", favoriteArticle);
+    const existingFavorite = favoriteState.find(
       (faveArticle) =>
         faveArticle.url === favoriteArticle.url && faveArticle.userId === userId
     );
+    console.log("existingFavorite in toggleFavorite", existingFavorite);
 
     if (existingFavorite) {
       // Toggle the existing favorite's isFavorite status
-      return favoriteArticles.map((faveArticle) =>
+      return favoriteState.map((faveArticle) =>
         faveArticle.url === url && faveArticle.userId === userId
           ? { ...faveArticle, isFavorite: !faveArticle.isFavorite }
           : faveArticle
       );
     } else {
-      // Add new article as favorite
-      return [...favoriteArticles, favoriteArticle];
+      return [...favoriteState, favoriteArticle];
     }
   }
+  const toggleFavoriteProduziertObjekte = toggleFavorite(article);
+  console.log(
+    "toggleFavoriteProduziertObjekte",
+    toggleFavoriteProduziertObjekte
+  );
 
-  function handleToggleFavorite(article, userId) {
-    const updatedArticles = toggleFavorite(favoriteArticles, article, userId);
-    setFavoriteArticles(updatedArticles);
+  function handleToggleFavorite(article) {
+    const updatedArticles = toggleFavorite(article);
+    setFavoriteState(updatedArticles);
+  }
+
+  function isFavorite(favoriteState, article) {
+    return favoriteState.find((faveArticle) => faveArticle.url === article.url)
+      ?.isFavorite;
   }
 
   return (
@@ -156,14 +165,24 @@ export default function ArticleCard({
           height={400}
         />
       )}
-      <FavoriteButton
-        isFavorite={isFavorite(favoriteArticles, article)}
-        handleToggleFavorite={handleToggleFavorite}
-        onClick={() => handleToggleFavorite(favoriteArticles, url, userId)}
-        article={article}
-        userId={userId}
-        favoriteArticles={favoriteArticles}
-      />
+      {session && (
+        <FavoriteButton onClick={handleToggleFavorite}>
+          {isFavorite(favoriteState, article) ? (
+            <IconWrapper>
+              <BookmarkCheck color="#FAF9F6" size={35} strokeWidth={1} />
+            </IconWrapper>
+          ) : (
+            <IconWrapper>
+              <Bookmark
+                fill="#FAF9F6"
+                color="#FAF9F6"
+                size={35}
+                strokeWidth={1}
+              />
+            </IconWrapper>
+          )}
+        </FavoriteButton>
+      )}
       {article.title && (
         <a
           href={article.url}

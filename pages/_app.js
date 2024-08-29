@@ -7,6 +7,13 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
+  const [favoriteState, setFavoriteState] = useLocalStorageState(
+    "favoriteState",
+    {
+      defaultValue: [],
+    }
+  );
+
   return (
     <>
       <GlobalStyle />
@@ -14,8 +21,8 @@ export default function App({
         <Layout>
           <Component
             {...pageProps}
-            // favoriteArticles={favoriteArticles}
-            // handleToggleFavorite={handleToggleFavorite}
+            favoriteState={favoriteState}
+            setFavoriteState={setFavoriteState}
           />
         </Layout>
       </SessionProvider>
