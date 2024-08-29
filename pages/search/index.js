@@ -14,7 +14,7 @@ const PaginationContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  margin-bottom: 2rem;
+  margin-bottom: 10vh;
 `;
 
 const PaginationButton = styled.button`
