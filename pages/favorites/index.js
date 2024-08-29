@@ -1,12 +1,13 @@
+import FavoritesList from "@/features/FavoritesList/FavoritesList";
 import React from "react";
 
-function Favorites({ favoriteArticles }) {
+function Favorites({ favoriteArticles, handleToggleFavorite }) {
   return (
-    <div
-      favoriteArticles={favoriteArticles}
-      handleToggleFavorite={handleToggleFavorite}
-    >
-      Favorites
+    <div>
+      <FavoritesList
+        favoriteArticles={favoriteArticles}
+        handleToggleFavorite={handleToggleFavorite}
+      />
     </div>
   );
 }
