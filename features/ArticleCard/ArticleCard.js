@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import newsAppThumbnail from "/assets/news-app-thumbnail.png";
+import FavoriteButton from "../FavoriteButton/FavoriteButton";
+import isFavorite from "../FavoriteButton/utils/isFavorite";
 
 const IconWrapper = styled.div`
   position: absolute;
@@ -51,22 +53,23 @@ const PublishedAt = styled.p`
   text-align: left; /* Align left */
 `;
 
-const FavoriteButton = styled.button`
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-`;
-
 const StyledStrong = styled.strong`
   color: #001233;
 `;
 
-export default function ArticleCard({ article, favorites, setFavorites }) {
+export default function ArticleCard({
+  article,
+  favoriteArticles,
+  handleToggleFavorite,
+}) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
     return src;
   };
+
+  // make session available for favorite button
+  const { data: session } = useSession();
+  const userId = session?.user?.userId;
 
   return (
     <Card>
@@ -89,7 +92,15 @@ export default function ArticleCard({ article, favorites, setFavorites }) {
           height={400}
         />
       )}
-
+      <FavoriteButton
+        isFavorite={isFavorite(favoriteArticles, article)}
+        handleToggleFavorite={handleToggleFavorite}
+        onClick={() => handleToggleFavorite(favoriteArticles, url, userId)}
+        article={article}
+        url={article.url}
+        userId={userId}
+        favoriteArticles={favoriteArticles}
+      />
       {article.title && (
         <a
           href={article.url}
