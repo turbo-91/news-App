@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import newsAppThumbnail from "/assets/news-app-thumbnail.png";
 import FavoriteButton from "../FavoriteButton/FavoriteButton";
-import isFavorite from "../FavoriteButton/utils/isFavorite";
+import useLocalStorageState from "use-local-storage-state";
 
 const IconWrapper = styled.div`
   position: absolute;
@@ -59,8 +59,8 @@ const StyledStrong = styled.strong`
 
 export default function ArticleCard({
   article,
-  favoriteArticles,
-  handleToggleFavorite,
+  // favoriteArticles,
+  // handleToggleFavorite,
 }) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
@@ -70,6 +70,70 @@ export default function ArticleCard({
   // make session available for favorite button
   const { data: session } = useSession();
   const userId = session?.user?.userId;
+
+  // Favorite Functionality
+  const [favoriteArticles, setFavoriteArticles] = useLocalStorageState(
+    "favorite Articles",
+    {
+      defaultValue: [],
+    }
+  );
+  console.log("favorite articles before isFavorite", favoriteArticles);
+
+  function isFavorite(favoriteArticles, article) {
+    console.log("favorite articles in isFavorite", favoriteArticles);
+    return favoriteArticles.find(
+      (favoriteArticle) => favoriteArticle.url === article.url
+    )?.isFavorite;
+  }
+
+  function toggleFavorite(favoriteArticles) {
+    const {
+      source: { id: sourceId, name: sourceName },
+      author,
+      title,
+      description,
+      url,
+      urlToImage,
+      publishedAt,
+      content,
+      __v,
+    } = article;
+    const favoriteArticle = {
+      source: { id: sourceId, name: sourceName },
+      author,
+      title,
+      description,
+      url,
+      urlToImage,
+      publishedAt,
+      content,
+      __v,
+      userId: session.user.userId,
+      isFavorite: true,
+    };
+    const existingFavorite = favoriteArticles.find(
+      (faveArticle) =>
+        faveArticle.url === favoriteArticle.url && faveArticle.userId === userId
+    );
+
+    if (existingFavorite) {
+      // Toggle the existing favorite's isFavorite status
+      return favoriteArticles.map((faveArticle) =>
+        faveArticle.url === url && faveArticle.userId === userId
+          ? { ...faveArticle, isFavorite: !faveArticle.isFavorite }
+          : faveArticle
+      );
+    } else {
+      // Add new article as favorite
+      return [...favoriteArticles, favoriteArticle];
+    }
+  }
+
+  function handleToggleFavorite(article, userId) {
+    const updatedArticles = toggleFavorite(favoriteArticles, article, userId);
+    setFavoriteArticles(updatedArticles);
+  }
 
   return (
     <Card>
@@ -97,7 +161,6 @@ export default function ArticleCard({
         handleToggleFavorite={handleToggleFavorite}
         onClick={() => handleToggleFavorite(favoriteArticles, url, userId)}
         article={article}
-        url={article.url}
         userId={userId}
         favoriteArticles={favoriteArticles}
       />

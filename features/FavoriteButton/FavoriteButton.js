@@ -18,9 +18,13 @@ function FavoriteButton({
   userId,
   isFavorite,
   favoriteArticles,
-  url,
   handleToggleFavorite,
 }) {
+  function isFavorite(favoriteArticles, article) {
+    return favoriteArticles.find(
+      (favoriteArticle) => favoriteArticle.url === article.url
+    )?.isFavorite;
+  }
   return (
     <Button
       favoriteArticles={favoriteArticles}
