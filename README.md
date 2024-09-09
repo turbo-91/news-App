@@ -22,29 +22,44 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Preview
+## Overview
 
 A mobile app that allows to research and save news articles based on the News API [https://newsapi.org/](https://newsapi.org/)
 
-## Preview
+## Features
 
+-   Carousel with the headlines of the day for several countries
+-   Search function for news articles
+-   Login and profile page
+-   Favorite articles
+-   OpenAI-based translation 
+
+## Technologies
+
+|                                                                                                                       |           |                                                                                                |            |
+| --------------------------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| [![My Skills](https://skillicons.dev/icons?i=css&theme=light)](https://developer.mozilla.org/en-US/docs/Web/CSS)      | CSS       | [![My Skills](https://skillicons.dev/icons?i=js&theme=light)](https://developer.mozilla.org/en/JavaScript) | Javascript |
+| [![My Skills](https://skillicons.dev/icons?i=react&theme=light)](https://react.dev/)                                  | React     | [![My Skills](https://skillicons.dev/icons?i=nextjs&theme=light))]([https://nodejs.org/en](https://nextjs.org/))      | Next.js
+|    
+
+## Preview
 ### Carousel: Headlines Of The Day
 
-![Headlines](./assest/login.gif)
+![Headlines Of The Day](./assets/spotlight.gif)
 
-### Edit Bio
+### Search Articles
 
-![Edit Bio](./assest/edit-bio.gif)
+![Search Articles](./assets/search.gif)
 
-### Upload Profile Picture
+### Login
 
-![Upload Profile Picture](./assest/upload-image.gif)
+![Login](./assets/login.gif)
 
-### Friends and Friend Request
+### Favorites
 
-![Friend Request](./assest/friends-and-wannabees.gif)
+![Favorites](./assets/favorite.gif)
 
-### Search Friends
+### Translate Articles
 
-![Search Friends](./assest/search-friends.gif)
+![Translate Articles](./assets/translate.gif)
 
