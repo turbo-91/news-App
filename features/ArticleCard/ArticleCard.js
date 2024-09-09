@@ -9,6 +9,8 @@ import { useSession } from "next-auth/react";
 import newsAppThumbnail from "/assets/news-app-thumbnail.png";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import useLocalStorageState from "use-local-storage-state";
+import OpenAI from "openai";
+import { BeatLoader } from "react-spinners";
 
 const IconWrapper = styled.div`
   position: absolute;
@@ -39,6 +41,15 @@ const Description = styled.p`
   font-family: Helvetica, Arial, sans-serif;
 `;
 
+const DescriptionTranslated = styled.p`
+  color: black;
+  margin: 8px 0;
+  text-align: justify;
+  font-size: 1em;
+  font-family: Helvetica, Arial, sans-serif;
+  font-style: italic;
+`;
+
 const Author = styled.p`
   margin: 8px 0;
   color: #001233;
@@ -64,23 +75,45 @@ const FavoriteButton = styled.button`
   cursor: pointer;
 `;
 
+const TranslateButton = styled.button`
+  background-color: #001233;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-family: Helvetica, Arial, sans-serif;
+  align-self: flex-start;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const LoaderContainer = styled.div`
+  margin-top: 1vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
 export default function ArticleCard({
   article,
   favoriteState,
   setFavoriteState,
-  // favoriteArticles,
-  // handleToggleFavorite,
 }) {
   // bypass next/Image components domain restriction! Caution! Security concern.
   const customLoader = ({ src }) => {
     return src;
   };
-  console.log("favoriteState in ArticleCard", favoriteState);
+
+  ///////////////// Favorite Functionality /////////////////////////////////
+
   // make session available for favorite button
   const { data: session } = useSession();
   const userId = session?.user?.userId;
-
-  // Favorite Functionality
 
   const {
     source: { id: sourceId, name: sourceName },
@@ -95,8 +128,6 @@ export default function ArticleCard({
   } = article;
 
   function toggleFavorite(article) {
-    console.log("favoriteState in toggleFavorite", favoriteState);
-    console.log("article in toggleFavorite", article);
     const favoriteArticle = {
       source: { id: sourceId, name: sourceName },
       author,
@@ -110,13 +141,11 @@ export default function ArticleCard({
       userId: session.user.userId,
       isFavorite: true,
     };
-    console.log("favoriteArticle in toggleFavorite", favoriteArticle);
+
     const existingFavorite = favoriteState.find(
       (faveArticle) =>
         faveArticle.url === favoriteArticle.url && faveArticle.userId === userId
     );
-    console.log("existingFavorite in toggleFavorite", existingFavorite);
-
     if (existingFavorite) {
       // Toggle the existing favorite's isFavorite status
       return favoriteState.map((faveArticle) =>
@@ -128,11 +157,6 @@ export default function ArticleCard({
       return [...favoriteState, favoriteArticle];
     }
   }
-  const toggleFavoriteProduziertObjekte = toggleFavorite(article);
-  console.log(
-    "toggleFavoriteProduziertObjekte",
-    toggleFavoriteProduziertObjekte
-  );
 
   function handleToggleFavorite(article) {
     const updatedArticles = toggleFavorite(article);
@@ -142,6 +166,62 @@ export default function ArticleCard({
   function isFavorite(favoriteState, article) {
     return favoriteState.find((faveArticle) => faveArticle.url === article.url)
       ?.isFavorite;
+  }
+
+  //////////////////// TRANSLATE FEATURE  ////////////////////////////
+
+  const [thisArticle, setThisArticle] = useState(article);
+  const [translatedArticle, setTranslatedArticle] = useState("");
+  const [isTranslated, setIsTranslated] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  const openai = new OpenAI({
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true,
+  });
+
+  async function translate() {
+    setIsTranslating(true);
+    if (isTranslated) {
+      setIsTranslated(false);
+      setTranslatedArticle("");
+      return;
+    }
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: `You are an expert data translator. You will be provided a news article in a foreign language. Start with "The title translates to:'article.title', then give a summary of what it is about.`,
+        },
+        {
+          role: "user",
+          content: JSON.stringify({
+            source: {
+              id: thisArticle.source.id,
+              name: thisArticle.source.name,
+            },
+            _id: thisArticle._id,
+            author: thisArticle.author,
+            title: thisArticle.title,
+            description: thisArticle.description,
+            url: thisArticle.url,
+            urlToImage: thisArticle.urlToImage,
+            publishedAt: thisArticle.publishedAt,
+            userId: thisArticle.userId,
+            __v: thisArticle.__v,
+          }),
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 256,
+      top_p: 1,
+    });
+    const translatedContent = response.choices[0].message.content;
+    setIsTranslating(false);
+    setTranslatedArticle(translatedContent);
+    setIsTranslated(true);
   }
 
   return (
@@ -183,62 +263,119 @@ export default function ArticleCard({
           )}
         </FavoriteButton>
       )}
-      {article.title && (
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <Title>{article.title}</Title>
-        </a>
+      {isTranslating ? (
+        <LoaderContainer>
+          <BeatLoader color="#001233" size={15} />
+        </LoaderContainer>
+      ) : translatedArticle ? (
+        <>
+          {article.title && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <Title>{article.title}</Title>
+            </Link>
+          )}
+          <DescriptionTranslated>{translatedArticle}</DescriptionTranslated>
+          {article.author && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <Author>
+                <StyledStrong>Author:</StyledStrong> {article.author}
+              </Author>
+            </Link>
+          )}
+          {article.publishedAt && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <PublishedAt>
+                <StyledStrong>Published At:</StyledStrong>{" "}
+                {new Date(article.publishedAt).toLocaleString()}
+              </PublishedAt>
+            </Link>
+          )}
+          {article.source.name && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <PublishedAt>
+                <StyledStrong>Source:</StyledStrong> {article.source.name}
+              </PublishedAt>
+            </Link>
+          )}
+        </>
+      ) : (
+        <>
+          {article.title && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <Title>{article.title}</Title>
+            </Link>
+          )}
+          {article.description && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <Description>{article.description}</Description>
+            </Link>
+          )}
+          {article.author && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <Author>
+                <StyledStrong>Author:</StyledStrong> {article.author}
+              </Author>
+            </Link>
+          )}
+          {article.publishedAt && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <PublishedAt>
+                <StyledStrong>Published At:</StyledStrong>{" "}
+                {new Date(article.publishedAt).toLocaleString()}
+              </PublishedAt>
+            </Link>
+          )}
+          {article.source.name && (
+            <Link
+              href={article.url}
+              style={{ textDecoration: "none" }}
+              passHref
+            >
+              <PublishedAt>
+                <StyledStrong>Source:</StyledStrong> {article.source.name}
+              </PublishedAt>
+            </Link>
+          )}
+        </>
       )}
-      {article.description && (
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <Description>{article.description}</Description>
-        </a>
-      )}
-      {article.author && (
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <Author>
-            <StyledStrong>Author:</StyledStrong> {article.author}
-          </Author>
-        </a>
-      )}
-      {article.publishedAt && (
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <PublishedAt>
-            <StyledStrong>Published At:</StyledStrong>{" "}
-            {new Date(article.publishedAt).toLocaleString()}
-          </PublishedAt>
-        </a>
-      )}
-      {article.source.name && (
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <PublishedAt>
-            <StyledStrong>Source:</StyledStrong> {article.source.name}
-          </PublishedAt>
-        </a>
+      {session && (
+        <ButtonContainer>
+          <TranslateButton onClick={translate}>
+            {isTranslated ? "Show Original" : "AI-powered translation"}
+          </TranslateButton>
+        </ButtonContainer>
       )}
     </Card>
   );
