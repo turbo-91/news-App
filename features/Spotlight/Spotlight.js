@@ -95,6 +95,7 @@ export default function Spotlight({ favoriteState, setFavoriteState }) {
     setUrl(
       `https://newsapi.org/v2/top-headlines?country=${value}&apiKey=21247b89f2cf48c48d0df5ed148af376`
     );
+    console.log("url", url);
   };
 
   // Slider functionality
