@@ -1,29 +1,23 @@
-# New Next Project
+# News App
 
-This project was created from the Spiced Academy `next` template.
+## Running the project
 
-You can download the project by running this command in your terminal:
+1. Clone the project.
+2. Run `npm install`
+3. Create a `.env.local` file.
 
-```bash
-npx -y ghcd@latest spiced-academy/fs-web-exercises/tree/main/templates/next my-app -i
+```
+{
+GITHUB_ID=""
+GITHUB_SECRET=""
+NEXT_PUBLIC_OPENAI_API_KEY=""
+}
 ```
 
-## Development
+Now run the server:
 
-### Local Development
+```
+npm run dev
+```
 
-To work locally, please install the dependencies using `npm i` first.
-
-Run `npm run dev` to start a development server and open the displayed URL in a browser.
-
-Use `npm run test` to run the tests.
-
-### Scripts
-
-You can use the following commands:
-
-- `npm run dev` to start a development server
-- `npm run build` to build the project
-- `npm run start` to start a production server
-- `npm run test` to run the tests
-- `npm run lint` to run the linter
+Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
