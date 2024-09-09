@@ -36,7 +36,7 @@ A mobile app that allows to research and save news articles based on the News AP
 
 ## Technologies
 
-
+|                                                                                                                       |           |                                                                                                |            |
 | --------------------------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------- | ---------- |
 | [![My Skills](https://skillicons.dev/icons?i=css&theme=light)](https://developer.mozilla.org/en-US/docs/Web/CSS)      | CSS       | [![My Skills](https://skillicons.dev/icons?i=js&theme=light)](https://developer.mozilla.org/en/JavaScript) | Javascript |
 | [![My Skills](https://skillicons.dev/icons?i=react&theme=light)](https://react.dev/)                                  | React     | [![My Skills](https://skillicons.dev/icons?i=nextjs&theme=light))]([https://nodejs.org/en](https://nextjs.org/))      | Next.js  
