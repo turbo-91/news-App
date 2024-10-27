@@ -93,7 +93,7 @@ export default function Spotlight({ favoriteState, setFavoriteState }) {
   const handleCountryChange = (value) => {
     setCountryValue(value);
     setUrl(
-      `https://newsapi.org/v2/top-headlines?country=${value}&apiKey=21247b89f2cf48c48d0df5ed148af376`
+      `https://newsapi.org/v2/top-headlines?country=${value}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
     );
     console.log("url", url);
   };

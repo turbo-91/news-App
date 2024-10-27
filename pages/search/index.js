@@ -55,7 +55,7 @@ export default function SearchPage({ favoriteState, setFavoriteState }) {
   const handlePageChange = (newPage) => {
     setPage(newPage);
     setUrl(
-      `https://newsapi.org/v2/everything?q=${keyWord}&from=${dateRangeFrom}&to=${dateRangeTo}&language=${languageValue}&pageSize=20&page=${newPage}&apiKey=21247b89f2cf48c48d0df5ed148af376`
+      `https://newsapi.org/v2/everything?q=${keyWord}&from=${dateRangeFrom}&to=${dateRangeTo}&language=${languageValue}&pageSize=20&page=${newPage}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
     );
   };
 
