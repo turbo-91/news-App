@@ -18,7 +18,7 @@
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.1",
     "next": "13.4.8",
-    "next-auth": "^4.24.7",
+    "next-auth": "^4.24.15",
     "openai": "^4.52.0",
     "react": "18.2.0",
     "react-date-range": "^2.0.1",
