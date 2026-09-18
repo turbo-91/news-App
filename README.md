@@ -44,6 +44,8 @@ A mobile app that allows to research and save news articles based on the News AP
 ## Preview
 ### Carousel: Headlines Of The Day
 
+Note: The international headlines feature was originally built using NewsAPI's country-based Top Headlines endpoint. NewsAPI currently only returns country-filtered headlines reliably for the United States, so other country selections may return no articles despite a successful API response.
+
 ![Headlines Of The Day](./assets/spotlight.gif)
 
 ### Search Articles
